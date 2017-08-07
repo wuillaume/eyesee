@@ -154,7 +154,7 @@
 			            . ",text=".$conn->quote($text)
 			            . ",recording=".$conn->quote($changeRecording)
 			            . " WHERE step_id = ".$conn->quote($step_id);
-			            echo $sql;
+			          //  echo $sql;
 			        $userdata = $conn->query($sql);
 
 			        // REinit changeRecording
@@ -163,7 +163,7 @@
 			        $sql = "UPDATE form SET "
 			            . "step_order=".$conn->quote($step_order)
 			            . " WHERE step_id = ".$conn->quote($step_id);
-			            echo $sql;
+			         //   echo $sql;
 			        $userdata = $conn->query($sql);
 
 			         $sql = "UPDATE  form_id SET "
@@ -189,7 +189,7 @@
 				        $stepIdData = $conn->query("SELECT LAST_INSERT_ID();");
 				       	$step_idArray = $stepIdData->fetch();
 				        $step_id = $step_idArray[0];
-				        echo $step_id;
+				     //   echo $step_id;
 
 				         $sql = "SELECT MAX(step_order) FROM form WHERE form.form_id=$form_id";
 				     	$stepOrderData = $conn->query($sql);
@@ -200,7 +200,7 @@
 				           . "step_order=".$conn->quote($stepOrderMaxPlusOne)
 				            . " WHERE step_id = ".$conn->quote($step_id);
 				     $userdata = $conn->query($sql);
-				     echo "ADDED STEP ORDER";
+				     // echo "ADDED STEP ORDER";
 
 				        /* Link form step */
 				        $sql = "INSERT INTO form("
@@ -288,19 +288,6 @@
 
 		elseif($booleanViewMap){
 
-?>
-			<div class="form">
-			<?php
-			include("map_read.php");
-?>
-			</div>
-			<?php
-
-			$step_id = $_GET['step_id'];
-			?>
-			<?php
-			include("editStep.php");
-
 
 		}
 
@@ -317,6 +304,7 @@
 	  <title>The HTML5 Herald</title>
 	  <meta name="description" content="The HTML5 Herald">
 	  <meta name="Wuil" content="SitePoint">
+
 
 	<style>
 		.cascade {
@@ -417,6 +405,8 @@
 		});
 
 	</script>
+
+
 	</head>
 
 	<body>
@@ -567,19 +557,19 @@
 				        $stepIdData = $conn->query("SELECT LAST_INSERT_ID();");
 				       	$step_idArray = $stepIdData->fetch();
 				        $step_id = $step_idArray[0];
-				        echo $step_id;
+				        //echo $step_id;
 
 				         $sql = "SELECT MAX(step_order) FROM form WHERE form.form_id=$form_id";
 				     	$stepOrderData = $conn->query($sql);
 			         	$stepOrderArray = $stepOrderData->fetch();
-			         	 echo "STEP ORDER MAX ".$stepOrderArray[0];
+			         	// echo "STEP ORDER MAX ".$stepOrderArray[0];
 			        	 $stepOrderMaxPlusOne= $stepOrderArray[0] + 1;
 
 			         $sql = "UPDATE form SET "
 				           . "step_order=".$conn->quote($stepOrderMaxPlusOne)
 				            . " WHERE step_id = ".$conn->quote($step_id);
 				     $userdata = $conn->query($sql);
-				     echo "ADDED STEP ORDER ".$stepOrderMaxPlusOne;
+				     // echo "ADDED STEP ORDER ".$stepOrderMaxPlusOne;
 
 				        /* Link form step */
 				      
@@ -655,6 +645,23 @@
 			        
 			}
 	   }
+
+	   elseif($booleanViewMap){
+
+			$step_id = $_GET['step_id'];
+			$form_id = $_GET['form_id'];
+
+			include("connectDB.php");
+$mapReadLink = "map_read.php?form_id=".$form_id;
+
+?>
+<iframe src=<?php echo $mapReadLink ?> style="border: 0; width: 100%; height: 25em"></iframe>
+
+
+			<?php
+			include("editStep.php");
+
+		}
 
 	?>
 

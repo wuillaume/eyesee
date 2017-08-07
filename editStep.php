@@ -7,6 +7,7 @@ $namePage = basename($_SERVER['PHP_SELF']);
 	        <?php
 				echo "You are modifying map id : ".$form_id . " and step id".$step_id;
 				echo "<br/><a href=$namePage?viewMap=true&form_id=$form_id&step_id=$step_id> View the map<a/><br/>";
+				echo "<br/><a href=$namePage> Select different map / step <a/><br/>";
 				echo "<br/><a href=$namePage?deleteMap=true&form_id=$form_id> Delete the map<a/>";
 				echo "<br/><a href=$namePage?deleteStep=true&step_id=$step_id&form_id=$form_id> Delete the step<a/>";
 

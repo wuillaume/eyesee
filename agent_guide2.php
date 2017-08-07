@@ -21,9 +21,14 @@ iframe {
     display: block;       /* iframes are inline by default */
     background: #000;
     border: none;         /* Reset default border */
-    height: 100vh;        /* Viewport-relative units */
-    width: 100vw;
+    height: 85vh;        /* Viewport-relative units */
+    width: 85vw;
 }
+button{
+  width :85vw;
+}
+
+
 
 
 #myDIV2{
@@ -60,18 +65,16 @@ function myFunction() {
     <br />
          
 </div>
-<button onclick="myFunction()">Click Me</button>
+<button onclick="myFunction()">Change view</button>
 
 <div id="myDIV">
 
-        <iframe class="iframe1" src="http://eyesee.internationalcallcentre.com/crm/dgrid/campaign_selector.php?" . $_SERVER['QUERY_STRING'] name="Match Centre"
-               >
+        <iframe class="iframe1" src="http://eyesee.internationalcallcentre.com/crm/dgrid/campaign_selector.php?" . $_SERVER['QUERY_STRING'] name="" >
                 content if browser does not support
-                </iframe>
+                </iframe> 
 </div>
 <div id="myDIV2">
- <iframe class="iframe2"  src="//jsfiddle.net/wuil/9fddopr5/6/embedded/result/" name="Guide"
-                width="95%" height="95%">
+ <iframe class="iframe2"  src="map_read.php?form_id=1" name="Guide">
                 content if browser does not support
                 </iframe>
 </div>
