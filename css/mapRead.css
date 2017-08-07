@@ -1,0 +1,10 @@
+.contentText {
+	background: #ffffff;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, .4);
+	margin: 4em;
+	min-width: 480px;
+	padding: 1em;
+}
+#c{
+	text-align: center;
+}

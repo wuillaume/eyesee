@@ -1,0 +1,107 @@
+
+<style>
+.item-display {
+    cursor: pointer;
+}
+.item-field {
+    display: none;
+}
+</style>
+
+
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>The HTML5 Herald</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+
+
+<style>
+.item-display {
+    cursor: pointer;
+}
+.item-field {
+    display: none;
+}
+</style>
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+</head>
+</head>
+
+<body>
+
+
+ <script>
+// ABLE TO EDIT a normal text field
+$(document.documentElement)
+    .on("click", "span.item-display", function(event) {
+        $(event.currentTarget)
+            .hide()
+            .next("span.item-field")
+            .show()
+            .find(":input:first")
+            .focus()
+            .select();
+    })
+    .on("keypress", "span.item-field", function(event) {
+        if (event.keyCode != 13)
+            return;
+        
+        event.preventDefault();
+        
+        var $field = $(event.currentTarget),
+            $display = $field.prev("span.item-display");
+        
+        $display.html($field.find(":input:first").val());
+        $display.show();
+        $field.hide();
+    });
+</script>
+
+<table border="1" cellpadding="3">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <span class="item-display">The Blue Whales</span>
+                <span class="item-field">
+                    <input type="text" value="The Blue Whales" />
+                </span>
+            </td>
+            <td>
+                <span class="item-display">It's a whale of a tale!</span>
+                <span class="item-field">
+                    <input type="text" value="It's a whale of a tale!" />
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="item-display">Robocop</span>
+                <span class="item-field">
+                    <input type="text" value="Robocop" />
+                </span>
+            </td>
+            <td>
+                <span class="item-display">A robotic cop</span>
+                <span class="item-field">
+                    <input type="text" value="A robotic cop" />
+                </span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
