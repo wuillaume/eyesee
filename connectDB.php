@@ -12,9 +12,7 @@ try
 	/* $conn = new mysqli($servername, $username, $password); */
 	//echo "Connected successfully";
 
-}
-catch (Exception $e)
-{
-        die('Erreur : ' . $e->getMessage());
-}
+}catch (PDOException $e) {
+	    exit("Connection failed: " . $e->getMessage());
+	}
 ?>

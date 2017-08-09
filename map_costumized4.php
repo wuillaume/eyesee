@@ -48,21 +48,7 @@
 
 
 	<?php 
-	/*Connect to the DB */
-	$host = "localhost";
-	$username = "root";
-	$password = "";
-	$database = "eyesee_map";
-
-	$dsn = "mysql:host=$host;dbname=$database";
-
-	TRY {
-	$conn = new PDO( $dsn, $username, $password );
-	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	// echo "Connected successfully";
-	} catch (PDOException $e) {
-	    exit("Connection failed: " . $e->getMessage());
-	}
+	include("connectDB.php");
 	?>
 
 	<?php
@@ -141,7 +127,7 @@
 			       	    //update mode, modifying existing step
 
 			       	$sql = "SELECT COUNT(distinct(form.step_id)) FROM form WHERE form.form_id=$form_id ";
-					$userdata = $conn->query($sql);
+					$userdata = $bdd->query($sql);
 					$list_form = $userdata->fetch();
 					$numberStep = $list_form[0];
 			    	if($numberStep>9){
@@ -150,27 +136,27 @@
 
 
 			        $sql = "UPDATE step SET "
-			            . "title=".$conn->quote($title)
-			            . ",text=".$conn->quote($text)
-			            . ",recording=".$conn->quote($changeRecording)
-			            . " WHERE step_id = ".$conn->quote($step_id);
+			            . "title=".$bdd->quote($title)
+			            . ",text=".$bdd->quote($text)
+			            . ",recording=".$bdd->quote($changeRecording)
+			            . " WHERE step_id = ".$bdd->quote($step_id);
 			          //  echo $sql;
-			        $userdata = $conn->query($sql);
+			        $userdata = $bdd->query($sql);
 
 			        // REinit changeRecording
 					$changeRecording = "";
 
 			        $sql = "UPDATE form SET "
-			            . "step_order=".$conn->quote($step_order)
-			            . " WHERE step_id = ".$conn->quote($step_id);
+			            . "step_order=".$bdd->quote($step_order)
+			            . " WHERE step_id = ".$bdd->quote($step_id);
 			         //   echo $sql;
-			        $userdata = $conn->query($sql);
+			        $userdata = $bdd->query($sql);
 
 			         $sql = "UPDATE  form_id SET "
-				           . "form_name=".$conn->quote($form_name)
-				           . ",btn_font_size=".$conn->quote($btn_font_size)
-				            . " WHERE form_id = ".$conn->quote($form_id);
-				     $userdata = $conn->query($sql);
+				           . "form_name=".$bdd->quote($form_name)
+				           . ",btn_font_size=".$bdd->quote($btn_font_size)
+				            . " WHERE form_id = ".$bdd->quote($form_id);
+				     $userdata = $bdd->query($sql);
 				    } 
 				    else {
 
@@ -181,40 +167,40 @@
 				        $sql = "INSERT INTO step("
 				            . "title, text, recording"
 				            . " ) VALUES ("
-				            . $conn->quote($title).","
-				            . $conn->quote($text).","
-				            . $conn->quote($changeRecording).")";
-				        $userdata = $conn->query($sql);
+				            . $bdd->quote($title).","
+				            . $bdd->quote($text).","
+				            . $bdd->quote($changeRecording).")";
+				        $userdata = $bdd->query($sql);
 
-				        $stepIdData = $conn->query("SELECT LAST_INSERT_ID();");
+				        $stepIdData = $bdd->query("SELECT LAST_INSERT_ID();");
 				       	$step_idArray = $stepIdData->fetch();
 				        $step_id = $step_idArray[0];
 				     //   echo $step_id;
 
 				         $sql = "SELECT MAX(step_order) FROM form WHERE form.form_id=$form_id";
-				     	$stepOrderData = $conn->query($sql);
+				     	$stepOrderData = $bdd->query($sql);
 			         	$stepOrderArray = $stepIdData->fetch();
 			        	 $stepOrderMaxPlusOne= $stepOrderArray[0] +1;
 
 			         $sql = "UPDATE form SET "
-				           . "step_order=".$conn->quote($stepOrderMaxPlusOne)
-				            . " WHERE step_id = ".$conn->quote($step_id);
-				     $userdata = $conn->query($sql);
+				           . "step_order=".$bdd->quote($stepOrderMaxPlusOne)
+				            . " WHERE step_id = ".$bdd->quote($step_id);
+				     $userdata = $bdd->query($sql);
 				     // echo "ADDED STEP ORDER";
 
 				        /* Link form step */
 				        $sql = "INSERT INTO form("
 				           . "form_id,step_id,step_order"
 				            . " ) VALUES ("
-				            . $conn->quote($form_id).","
-				            . $conn->quote($step_id).","
-				            . $conn->quote($stepOrderMaxPlusOne).")";
-				        $userdata = $conn->query($sql);
+				            . $bdd->quote($form_id).","
+				            . $bdd->quote($step_id).","
+				            . $bdd->quote($stepOrderMaxPlusOne).")";
+				        $userdata = $bdd->query($sql);
 
 				        $sql = "UPDATE  form_id SET "
-				           . "form_name=".$conn->quote($form_name)
-				            . " WHERE form_id = ".$conn->quote($form_id);
-				     $userdata = $conn->query($sql);
+				           . "form_name=".$bdd->quote($form_name)
+				            . " WHERE form_id = ".$bdd->quote($form_id);
+				     $userdata = $bdd->query($sql);
 				    }
 				} 
 				else{
@@ -247,24 +233,24 @@
 			/* Getting the lists of step related to the form */
 
 			$sql = "SELECT * FROM form WHERE form.form_id=$form_id ";
-			$resultquery = $conn->query($sql);
+			$resultquery = $bdd->query($sql);
 
 			while ($list_step = $resultquery->fetch()){
 
 			$thisStepId = $list_step['step_id'];
 
 			 $sql = "DELETE FROM step WHERE step.step_id=$thisStepId";
-			 $userdata = $conn->query($sql);
+			 $userdata = $bdd->query($sql);
 
 			}
 	        
 			// Delete the relation between from and step
 	        $sql = "DELETE FROM form WHERE form.form_id=$form_id";
-	        $userdata = $conn->query($sql);
+	        $userdata = $bdd->query($sql);
 
 			/*DELETE THE FORM */
 	        $sql = "DELETE FROM form_id WHERE form_id.form_id=$form_id";
-	        $userdata = $conn->query($sql);
+	        $userdata = $bdd->query($sql);
 
 	       
 			
@@ -277,11 +263,11 @@
 			$step_id = $_GET['step_id'];
 
 			$sql = "DELETE FROM step WHERE step_id=$step_id";
-			$userdata = $conn->query($sql);
+			$userdata = $bdd->query($sql);
 	        
 			// Delete the relation between from and step
 	        $sql = "DELETE FROM form WHERE form.step_id=$step_id";
-	        $userdata = $conn->query($sql);
+	        $userdata = $bdd->query($sql);
 
 
 		}
@@ -360,10 +346,8 @@
 	}
 	</style>
 
-	<script src="http://js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
-	<script type="text/javascript">bkLib.onDomLoaded(nicEditors.allTextAreas);</script>
-
-
+	<script src="ckeditor/ckeditor.js"></script>
+	
 
 
 	<!-- NEED IT FOR THE SELECT LIST
@@ -448,8 +432,8 @@
 	<div class="divTableCell">Mapto modify : 
 
 	 <?php
-				// $resultquery = $conn->query('SELECT distinct(form.form_id),form_name FROM form RIGHT JOIN form_id ON form.form_id = form_id.form_id');
-				 $resultquery = $conn->query('SELECT form_id,form_name FROM form_id');
+				// $resultquery = $bdd->query('SELECT distinct(form.form_id),form_name FROM form RIGHT JOIN form_id ON form.form_id = form_id.form_id');
+				 $resultquery = $bdd->query('SELECT form_id,form_name FROM form_id');
 				?>
 
 
@@ -478,8 +462,8 @@
 	<?php
 
 
-				//$resultquery2 = $conn->query('SELECT * FROM form INNER JOIN step ON form.step_id=step.step_id ORDER BY form_id');
-				$resultquery2 = $conn->query('SELECT * FROM form INNER JOIN step ON form.step_id=step.step_id RIGHT JOIN (SELECT form_id as id FROM form_id) as formID ON formID.id = form.form_id ORDER BY id');
+				//$resultquery2 = $bdd->query('SELECT * FROM form INNER JOIN step ON form.step_id=step.step_id ORDER BY form_id');
+				$resultquery2 = $bdd->query('SELECT * FROM form INNER JOIN step ON form.step_id=step.step_id RIGHT JOIN (SELECT form_id as id FROM form_id) as formID ON formID.id = form.form_id ORDER BY id');
 
 				?>
 				<select name="step" class="cascade">
@@ -551,24 +535,24 @@
 				        $sql = "INSERT INTO step("
 				            . "title"
 				            . " ) VALUES ("
-				            . $conn->quote($title).")";
-				        $userdata = $conn->query($sql);
+				            . $bdd->quote($title).")";
+				        $userdata = $bdd->query($sql);
 
-				        $stepIdData = $conn->query("SELECT LAST_INSERT_ID();");
+				        $stepIdData = $bdd->query("SELECT LAST_INSERT_ID();");
 				       	$step_idArray = $stepIdData->fetch();
 				        $step_id = $step_idArray[0];
 				        //echo $step_id;
 
 				         $sql = "SELECT MAX(step_order) FROM form WHERE form.form_id=$form_id";
-				     	$stepOrderData = $conn->query($sql);
+				     	$stepOrderData = $bdd->query($sql);
 			         	$stepOrderArray = $stepOrderData->fetch();
 			         	// echo "STEP ORDER MAX ".$stepOrderArray[0];
 			        	 $stepOrderMaxPlusOne= $stepOrderArray[0] + 1;
 
 			         $sql = "UPDATE form SET "
-				           . "step_order=".$conn->quote($stepOrderMaxPlusOne)
-				            . " WHERE step_id = ".$conn->quote($step_id);
-				     $userdata = $conn->query($sql);
+				           . "step_order=".$bdd->quote($stepOrderMaxPlusOne)
+				            . " WHERE step_id = ".$bdd->quote($step_id);
+				     $userdata = $bdd->query($sql);
 				     // echo "ADDED STEP ORDER ".$stepOrderMaxPlusOne;
 
 				        /* Link form step */
@@ -576,10 +560,10 @@
 				        $sql = "INSERT INTO form("
 				           . "form_id,step_id,step_order"
 				            . " ) VALUES ("
-				            . $conn->quote($form_id).","
-				            . $conn->quote($step_id).","
-				            . $conn->quote($stepOrderMaxPlusOne).")";
-				        $userdata = $conn->query($sql);
+				            . $bdd->quote($form_id).","
+				            . $bdd->quote($step_id).","
+				            . $bdd->quote($stepOrderMaxPlusOne).")";
+				        $userdata = $bdd->query($sql);
 
 			    	include("editStep.php");
 			    }
@@ -593,10 +577,10 @@
 					
 					/* NEED TO CREATE THE FORM WITH FORM NAME */
 					$sql = "INSERT INTO form_id() VALUES ()";
-			        $userdata = $conn->query($sql);
+			        $userdata = $bdd->query($sql);
 					
 					
-					$formIdData = $conn->query("SELECT LAST_INSERT_ID();");
+					$formIdData = $bdd->query("SELECT LAST_INSERT_ID();");
 			       	$form_idArray = $formIdData->fetch();
 			        $form_id = $form_idArray[0];
 			        echo "YOU CREATED THE FORM : ";
@@ -604,16 +588,16 @@
 			        echo "<br>";
 					$newFormName = "Map nb ".$form_id;
 			        $sql = "UPDATE  form_id SET "
-				           . "form_name=".$conn->quote($newFormName)
-				            . " WHERE form_id = ".$conn->quote($form_id);
-				     $userdata = $conn->query($sql);
+				           . "form_name=".$bdd->quote($newFormName)
+				            . " WHERE form_id = ".$bdd->quote($form_id);
+				     $userdata = $bdd->query($sql);
 
 
 
 					$sql = "INSERT INTO step() VALUES ()";
-			        $userdata = $conn->query($sql);
+			        $userdata = $bdd->query($sql);
 
-					$stepIdData = $conn->query("SELECT LAST_INSERT_ID();");
+					$stepIdData = $bdd->query("SELECT LAST_INSERT_ID();");
 			       	$step_idArray = $stepIdData->fetch();
 			        $step_id = $step_idArray[0];
 			       	echo "YOU CREATED THE STEP : ";
@@ -626,20 +610,20 @@
 			        $sql = "INSERT INTO form("
 			           . "form_id,step_id"
 			            . " ) VALUES ("
-			            . $conn->quote($form_id).","
-			            . $conn->quote($step_id).")";
-			        $userdata = $conn->query($sql);
+			            . $bdd->quote($form_id).","
+			            . $bdd->quote($step_id).")";
+			        $userdata = $bdd->query($sql);
 
 			        
 			         $sql = "SELECT MAX(step_order) FROM form WHERE form.form_id=$form_id";
-				     $stepOrderData = $conn->query($sql);
+				     $stepOrderData = $bdd->query($sql);
 			         $stepOrderArray = $stepIdData->fetch();
 			         $stepOrderMaxPlusOne= $stepOrderArray[0] +1;
 
 			         $sql = "UPDATE form SET "
-				           . "step_order=".$conn->quote($stepOrderMaxPlusOne)
-				            . " WHERE step_id = ".$conn->quote($step_id);
-				     $userdata = $conn->query($sql);
+				           . "step_order=".$bdd->quote($stepOrderMaxPlusOne)
+				            . " WHERE step_id = ".$bdd->quote($step_id);
+				     $userdata = $bdd->query($sql);
 			       
 			        include("editStep.php");
 			        

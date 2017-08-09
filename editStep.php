@@ -19,7 +19,7 @@ $namePage = basename($_SERVER['PHP_SELF']);
 	        <form action="map_costumized4.php?modify=true" method = "post">
 
 				        <?php
-				$resultquery = $conn->query("SELECT * FROM form_id WHERE form_id.form_id = $form_id");
+				$resultquery = $bdd->query("SELECT * FROM form_id WHERE form_id.form_id = $form_id");
 				$formName = $resultquery->fetch();
 				$formNameStr = $formName['form_name'];
 				//echo $formNameStr;
@@ -71,7 +71,7 @@ $namePage = basename($_SERVER['PHP_SELF']);
 	  <br />
 	            <br />
 	 			<?php
-				$resultquery = $conn->query("SELECT * FROM form WHERE form.step_id = $step_id");
+				$resultquery = $bdd->query("SELECT * FROM form WHERE form.step_id = $step_id");
 				$stepOr = $resultquery->fetch();
 				$stepOrStr = $stepOr['step_order'];
 				//echo $stepOrStr;
@@ -98,7 +98,7 @@ $namePage = basename($_SERVER['PHP_SELF']);
 	            <br />
 
 	            <?php
-				$resultquery = $conn->query("SELECT * FROM step WHERE step.step_id = $step_id");
+				$resultquery = $bdd->query("SELECT * FROM step WHERE step.step_id = $step_id");
 				$stepArr = $resultquery->fetch();
 				
 				?>
@@ -129,8 +129,10 @@ $namePage = basename($_SERVER['PHP_SELF']);
 	             <br />
 
 	            <strong>Step description:​</strong><textarea id="txtArea" name="text" rows="10" cols="70" value="dwdwd" ><?php echo htmlspecialchars($stepArr['text']) ?></textarea> 
+	            <script>
 
-
+ 			CKEDITOR.replace( 'txtArea' );
+				</script>
 	            <br /> 
 
 
