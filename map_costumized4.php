@@ -366,7 +366,6 @@
 
 			$step_id=$newStepId;
 
-			include("editStep.php");
 
 
 		}
@@ -455,7 +454,7 @@
 
 	<?
 
-	if (!isset($_POST['submit'])&&$permission&&!isset($_GET['nextStep'])&&!isset($_POST['leftMenu'])) {
+	if (!isset($_POST['submit'])&&$permission&&!isset($_GET['nextStep'])&&!isset($_POST['leftMenu'])&&!$booleanDeleteStep) {
 
 		?>
 		<div class="form">
@@ -776,6 +775,13 @@
 				include("editLeftMenuScript.php");
 				include("editLeftMenu.php");
 			}
+
+			elseif($booleanDeleteStep){
+
+				include("editStep.php");
+			}
+
+
 			
 			// echo "<br/>GET <br/>";
 			// echo var_dump($_GET);
