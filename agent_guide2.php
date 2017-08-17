@@ -1,5 +1,5 @@
 
-<?php echo $_SERVER['QUERY_STRING']?>
+
 
 <!doctype html>
 
@@ -57,6 +57,14 @@ function myFunction() {
 <body>
   <script src="js/scripts.js"></script>
 
+  <?php
+    if (isset($_GET['form_id'])) {
+      //  echo $_GET['form_id'];
+        $form_id = $_GET['form_id'];
+    }else{
+    }
+  ?>
+
 <div id="container">
    
     
@@ -69,12 +77,13 @@ function myFunction() {
 
 <div id="myDIV">
 
-        <iframe class="iframe1" src="http://eyesee.internationalcallcentre.com/crm/dgrid/campaign_selector.php?" . $_SERVER['QUERY_STRING'] name="" >
+        <iframe class="iframe1" src="https://eyesee.internationalcallcentre.com/crm/dgrid/campaign_selector.php?<?php echo $_SERVER['QUERY_STRING']; ?>" name="campaign_selector" >
                 content if browser does not support
-                </iframe> 
+                </iframe>  
+ 
 </div>
 <div id="myDIV2">
- <iframe class="iframe2"  src="map_read.php?form_id=1" name="Guide">
+ <iframe class="iframe2"  src="map_read.php?form_id=<?php echo htmlspecialchars($form_id) ?>" name="Guide">
                 content if browser does not support
                 </iframe>
 </div>

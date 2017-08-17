@@ -6,6 +6,7 @@
 	padding: 1em;
 }
 #c{
+  float:left;
 	text-align: center;
 }
 
@@ -60,6 +61,7 @@
    margin-top: 5px;
    vertical-align: top;
    font-size: 100%; 
+   
 }
 
 .btn-font-100{

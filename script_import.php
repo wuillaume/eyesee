@@ -25,11 +25,3 @@ $(document.documentElement)
         $field.hide();
     });
 </script>
-<style>
-.item-display {
-    cursor: pointer;
-}
-.item-field {
-    display: none;
-}
-</style>
